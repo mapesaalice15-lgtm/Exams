@@ -6,79 +6,77 @@
 <title>IPC Quiz 1 | Sir Fransisco</title>
 
 <style>
-:root { --primary:#00d2ff; --secondary:#3a7bd5; --success:#00e676; --warning:#ff9800; --dark-bg:#0f2027;}
-*{box-sizing:border-box;transition:.3s;user-select:none;}
+:root{--primary:#00d2ff;--secondary:#3a7bd5;--success:#00e676;--warning:#ff9800;--dark:#0f2027;}
+*{box-sizing:border-box;user-select:none;}
 body{
-font-family:'Segoe UI',Arial;
+font-family:Segoe UI,Arial;
 background:linear-gradient(135deg,#2c5364,#0f2027);
-min-height:100vh;margin:0;
-display:flex;align-items:center;justify-content:center;
-color:white;overflow:hidden;
+min-height:100vh;margin:0;display:flex;align-items:center;justify-content:center;color:#fff;
 }
-.card{width:95%;max-width:500px;background:rgba(255,255,255,.08);
-backdrop-filter:blur(20px);border-radius:24px;overflow:hidden;
-box-shadow:0 25px 50px rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.1);}
+.card{width:95%;max-width:500px;background:rgba(255,255,255,.08);backdrop-filter:blur(20px);
+border-radius:22px;overflow:hidden;box-shadow:0 25px 50px rgba(0,0,0,.5);}
 .card-header{background:linear-gradient(to right,var(--secondary),var(--primary));
-padding:20px;text-align:center;font-weight:bold;text-transform:uppercase;}
-.card-content{padding:30px;text-align:center;}
-.progress-container{width:100%;background:rgba(255,255,255,.1);height:8px;}
-#progressBar{width:0%;height:100%;background:var(--success);}
-input{width:100%;padding:14px;border-radius:12px;background:rgba(0,0,0,.2);
-border:1px solid rgba(255,255,255,.2);color:white;margin-bottom:10px;}
-.btn{width:100%;padding:15px;border-radius:12px;border:none;font-weight:bold;
-cursor:pointer;font-size:16px;margin-top:10px;}
-#startBtn{background:var(--primary);color:var(--dark-bg);}
-#nextBtn{background:var(--success);color:white;display:none;}
-.option{background:rgba(255,255,255,.05);margin:10px 0;padding:15px;border-radius:10px;
-cursor:pointer;border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;}
-.option.selected{background:var(--secondary);border-color:var(--primary);border-width:2px;}
-.letter-box{background:rgba(255,255,255,.1);width:30px;height:30px;display:flex;
-align-items:center;justify-content:center;border-radius:6px;margin-right:15px;}
-.timer{color:var(--warning);font-weight:bold;font-size:1.6rem;margin-bottom:10px;}
-.rules{font-size:13px;line-height:1.5;color:#ffd;text-align:left;}
+padding:18px;text-align:center;font-weight:bold;text-transform:uppercase;}
+.card-content{padding:25px;text-align:center;}
+.progress-container{width:100%;height:8px;background:rgba(255,255,255,.1);}
+#progressBar{height:100%;width:0;background:var(--success);}
+input{width:100%;padding:14px;border-radius:12px;background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.2);color:#fff;margin-bottom:10px;}
+.btn{width:100%;padding:15px;border-radius:12px;border:none;font-weight:bold;cursor:pointer;font-size:16px;margin-top:8px;}
+#startBtn{background:var(--primary);color:#003;}
+#nextBtn{background:var(--success);color:#fff;display:none;}
+.option{background:rgba(255,255,255,.08);margin:10px 0;padding:14px;border-radius:10px;cursor:pointer;display:flex;align-items:center;border:1px solid rgba(255,255,255,.1);}
+.option.selected{background:var(--secondary);border-color:var(--primary);}
+.letter-box{background:rgba(255,255,255,.15);width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:6px;margin-right:12px;font-weight:bold;}
+.timer{font-size:1.6rem;color:var(--warning);margin-bottom:10px;}
+.rules{text-align:left;font-size:13px;line-height:1.5;color:#ffd;}
 </style>
 </head>
 
-<body>
+<body oncontextmenu="return false;">
 
+<!-- START -->
 <div class="card" id="startScreen">
 <div class="card-header">STRICT EXAM MODE</div>
 <div class="card-content">
 <h2>IPC Quiz 1</h2>
+
 <div class="rules">
 <b>Exam Instructions</b>
 <ol>
-<li>One attempt only.</li>
-<li>ESC or tab switch auto-submit.</li>
-<li>Timer auto-submits.</li>
-<li>No back navigation.</li>
-<li>Do not refresh.</li>
+<li>Attempt this quiz only once.</li>
+<li>The timer will auto-submit when it reaches zero.</li>
+<li>Pressing <b>ESC</b>, switching tabs, or leaving the page submits the exam.</li>
+<li>You cannot go back to previous questions.</li>
+<li>Do NOT refresh the page.</li>
 </ol>
 </div>
+
 <input id="name" placeholder="Full Student Name">
 <input id="reg" placeholder="Registration Number">
 <button id="startBtn" class="btn">ENTER EXAMINATION</button>
 </div>
 </div>
 
+<!-- QUIZ -->
 <div class="card" id="quizScreen" style="display:none;">
 <div class="card-header">SECURE SESSION</div>
 <div class="progress-container"><div id="progressBar"></div></div>
 <div class="card-content">
-<div class="timer"><span id="time">07:30</span></div>
+<div class="timer" id="time">07:30</div>
 <h3 id="question"></h3>
 <div id="options"></div>
 <button id="nextBtn" class="btn">SUBMIT ANSWER</button>
 </div>
 </div>
 
+<!-- RESULT -->
 <div class="card" id="resultScreen" style="display:none;">
 <div class="card-header">EXAM COMPLETED</div>
 <div class="card-content">
 <h1 id="scoreDisplay"></h1>
 <h2 id="message"></h2>
 <p>Correct Questions: <span id="rawMarks"></span></p>
-<button onclick="location.reload()" class="btn" style="background:var(--secondary);color:white;">FINISH</button>
+<button onclick="location.reload()" class="btn" style="background:var(--secondary);color:#fff;">FINISH</button>
 </div>
 </div>
 
@@ -96,27 +94,25 @@ const quiz=[
 {q:"Which gas is used for low-temp sterilization?",options:["Oxygen","CO₂","Ethylene Oxide","Nitrogen","Chlorine"],answer:2}
 ];
 
-let i=0,score=0,timer,quizStarted=false,selectedIdx=null;
-let startTime,endTime;
+let i=0,score=0,timer,quizStarted=false,selectedIdx=null,startTime;
 
 const startScreen=document.getElementById("startScreen");
 const quizScreen=document.getElementById("quizScreen");
 const resultScreen=document.getElementById("resultScreen");
-const nameInput=document.getElementById("name");
-const regInput=document.getElementById("reg");
-const progressBar=document.getElementById("progressBar");
 const question=document.getElementById("question");
 const options=document.getElementById("options");
 const nextBtn=document.getElementById("nextBtn");
-const time=document.getElementById("time");
-const scoreDisplay=document.getElementById("scoreDisplay");
-const rawMarks=document.getElementById("rawMarks");
-const message=document.getElementById("message");
+const timeEl=document.getElementById("time");
 
 document.getElementById("startBtn").onclick=()=>{
-if(!nameInput.value||!regInput.value)return alert("Fill details!");
+const name=document.getElementById("name").value.trim();
+const reg=document.getElementById("reg").value.trim();
+if(!name||!reg)return alert("Fill details!");
+
+if(document.documentElement.requestFullscreen)document.documentElement.requestFullscreen();
 startTime=new Date().toLocaleTimeString();
 quizStarted=true;
+
 startScreen.style.display="none";
 quizScreen.style.display="block";
 loadQuestion();
@@ -127,15 +123,16 @@ function startTimer(){
 let t=450;
 timer=setInterval(()=>{
 t--;
-time.textContent=`${Math.floor(t/60)}:${(t%60).toString().padStart(2,"0")}`;
+timeEl.textContent=Math.floor(t/60)+":"+String(t%60).padStart(2,"0");
 if(t<=0)finish("Time Expired");
 },1000);
 }
 
 function loadQuestion(){
+selectedIdx=null;
+nextBtn.style.display="none";
 const q=quiz[i];
 question.textContent=(i+1)+". "+q.q;
-progressBar.style.width=(i/quiz.length*100)+"%";
 options.innerHTML="";
 q.options.forEach((o,idx)=>{
 let d=document.createElement("div");
@@ -157,15 +154,27 @@ i++;
 i<quiz.length?loadQuestion():finish("Completed Successfully");
 };
 
-function finish(msg){
+function finish(reason){
+if(!quizStarted)return;
+quizStarted=false;
 clearInterval(timer);
+if(document.fullscreenElement)document.exitFullscreen();
+
 quizScreen.style.display="none";
 resultScreen.style.display="block";
-const percent=Math.round(score/quiz.length*100)+"%";
+const percent=Math.round((score/quiz.length)*100)+"%";
 scoreDisplay.textContent=percent;
 rawMarks.textContent=score+" / "+quiz.length;
-message.textContent=msg;
+message.textContent=reason;
 }
+
+document.addEventListener("visibilitychange",()=>{
+if(document.visibilityState==="hidden"&&quizStarted)finish("AUTO-SUBMIT: Tab Switch");
+});
+
+document.addEventListener("keydown",e=>{
+if(e.key==="Escape"&&quizStarted)finish("AUTO-SUBMIT: ESC Pressed");
+});
 </script>
 </body>
 </html>
