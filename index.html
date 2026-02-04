@@ -124,7 +124,9 @@ const quiz=[
     {q:"Which gas is used for low-temp sterilization?", options:["Oxygen","CO₂","Ethylene Oxide","Nitrogen","Chlorine"],answer:2}
 ];
 
+// Tracking variables
 let i=0, score=0, timer, quizStarted = false, selectedIdx = null;
+let startTime, endTime; 
 let failedQuestions = [];
 const letters = ['A', 'B', 'C', 'D', 'E'];
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyoRq_IR_2hxQ9bOEDqJaMXxtdgP_UNG8wa1yfKO7N-bM8FarVMS5Y-YDebjT2-6Ii-/exec"; 
@@ -157,8 +159,10 @@ document.getElementById("startBtn").onclick = () => {
     let doc = document.documentElement;
     if (doc.requestFullscreen) doc.requestFullscreen();
     
+    // Capture Start Time
+    startTime = new Date().toLocaleTimeString();
+    
     quizStarted = true;
-    sendData(name, reg, "STARTED");
     
     document.getElementById("startScreen").style.display="none";
     document.getElementById("quizScreen").style.display="block";
@@ -192,7 +196,7 @@ function loadQuestion(){
             document.querySelectorAll(".option").forEach(el => el.classList.remove("selected"));
             d.classList.add("selected");
             selectedIdx = idx;
-            document.getElementById("nextBtn").style.display = "block"; // Show button only after selection
+            document.getElementById("nextBtn").style.display = "block";
         };
         container.appendChild(d);
     });
@@ -217,11 +221,16 @@ document.getElementById("nextBtn").onclick = () => {
     }
 };
 
-function sendData(name, reg, status) {
+// Data Submission
+function sendFinalData(name, reg, sTime, eTime, rawScore, percent, reason) {
     const formData = new URLSearchParams();
     formData.append("name", name);
     formData.append("reg", reg);
-    formData.append("score", status);
+    formData.append("startTime", sTime);
+    formData.append("endTime", eTime);
+    formData.append("marks", rawScore); // Corrected Count (e.g. 8)
+    formData.append("score", percent);  // Percentage (e.g. 80%)
+    formData.append("status", reason);
 
     fetch(SCRIPT_URL, {
         method: "POST",
@@ -236,17 +245,21 @@ function finish(reason) {
     clearInterval(timer);
     if (document.fullscreenElement) document.exitFullscreen();
     
+    // Capture End Time
+    endTime = new Date().toLocaleTimeString();
+    
     const name = document.getElementById("name").value;
     const reg = document.getElementById("reg").value;
-    const finalScore = `${score}/${quiz.length} [${reason}]`;
+    const rawScore = score; // Number of correct answers
+    const percent = Math.round((score/quiz.length)*100) + "%";
 
-    sendData(name, reg, finalScore);
+    // Send all required data to Google Sheets
+    sendFinalData(name, reg, startTime, endTime, rawScore, percent, reason);
 
     document.getElementById("quizScreen").style.display = "none";
     document.getElementById("resultScreen").style.display = "block";
     
-    let p = Math.round((score/quiz.length)*100);
-    document.getElementById("scoreDisplay").textContent = p + "%";
+    document.getElementById("scoreDisplay").textContent = percent;
     document.getElementById("message").textContent = reason;
 
     if(failedQuestions.length > 0) {
@@ -256,6 +269,4 @@ function finish(reason) {
 }
 </script>
 </body>
-
 </html>
-
