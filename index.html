@@ -1,173 +1,204 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IPC Quiz 1 | Sir Fransisco</title>
-    <style>
-        :root { --primary:#00d2ff; --secondary:#3a7bd5; --success:#00e676; --error:#ff5252; --warning:#ff9800; --dark-bg: #0f2027; }
-        * { box-sizing:border-box; transition:0.3s; user-select: none; }
-        body { font-family:'Segoe UI',Arial; background:linear-gradient(135deg,#2c5364,#0f2027); min-height:100vh; margin:0; display:flex; align-items:center; justify-content:center; color:white; overflow: hidden; }
-        .card { width:95%; max-width:500px; background:rgba(255,255,255,0.08); backdrop-filter:blur(20px); border-radius:24px; overflow:hidden; box-shadow:0 25px 50px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); }
-        .card-header { background: linear-gradient(to right, var(--secondary), var(--primary)); padding: 20px; text-align: center; font-weight: bold; text-transform: uppercase; font-size: 14px; }
-        .card-content { padding: 30px; text-align: center; }
-        .progress-container { width: 100%; background: rgba(255,255,255,0.1); height: 8px; }
-        #progressBar { width: 0%; height: 100%; background: var(--success); }
-        input { width:100%; padding:14px; border-radius:12px; background:rgba(0,0,0,0.2); border:1px solid rgba(255,255,255,0.2); color:white; margin-bottom:15px; outline:none; }
-        .btn { width:100%; padding:15px; border-radius:12px; border:none; font-weight:bold; cursor:pointer; font-size:16px; margin-top: 10px; }
-        #startBtn { background:var(--primary); color:var(--dark-bg); }
-        #nextBtn { background:var(--success); color:white; display: none; }
-        .option { background:rgba(255,255,255,0.05); margin:10px 0; padding:15px; border-radius:10px; cursor:pointer; border:1px solid rgba(255,255,255,0.1); text-align:left; display: flex; align-items: center; }
-        .option.selected { background:var(--secondary); border-color:var(--primary); border-width: 2px; }
-        .letter-box { background: rgba(255,255,255,0.1); width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; border-radius: 6px; margin-right: 15px; font-weight: bold; }
-        .timer { color:var(--warning); font-weight:bold; font-size:1.4rem; margin-bottom:10px; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IPC Quiz 1 | Sir Fransisco</title>
+
+<style>
+:root { --primary:#00d2ff; --secondary:#3a7bd5; --success:#00e676; --warning:#ff9800; --dark-bg:#0f2027;}
+*{box-sizing:border-box;transition:.3s;user-select:none;}
+body{
+font-family:'Segoe UI',Arial;
+background:linear-gradient(135deg,#2c5364,#0f2027);
+min-height:100vh;margin:0;
+display:flex;align-items:center;justify-content:center;
+color:white;overflow:hidden;
+}
+.card{width:95%;max-width:500px;background:rgba(255,255,255,.08);
+backdrop-filter:blur(20px);border-radius:24px;overflow:hidden;
+box-shadow:0 25px 50px rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.1);}
+.card-header{background:linear-gradient(to right,var(--secondary),var(--primary));
+padding:20px;text-align:center;font-weight:bold;text-transform:uppercase;}
+.card-content{padding:30px;text-align:center;}
+.progress-container{width:100%;background:rgba(255,255,255,.1);height:8px;}
+#progressBar{width:0%;height:100%;background:var(--success);}
+input{width:100%;padding:14px;border-radius:12px;background:rgba(0,0,0,.2);
+border:1px solid rgba(255,255,255,.2);color:white;margin-bottom:12px;}
+.btn{width:100%;padding:15px;border-radius:12px;border:none;font-weight:bold;
+cursor:pointer;font-size:16px;margin-top:10px;}
+#startBtn{background:var(--primary);color:var(--dark-bg);}
+#nextBtn{background:var(--success);color:white;display:none;}
+.option{background:rgba(255,255,255,.05);margin:10px 0;padding:15px;border-radius:10px;
+cursor:pointer;border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;}
+.option.selected{background:var(--secondary);border-color:var(--primary);border-width:2px;}
+.letter-box{background:rgba(255,255,255,.1);width:30px;height:30px;display:flex;
+align-items:center;justify-content:center;border-radius:6px;margin-right:15px;}
+.timer{color:var(--warning);font-weight:bold;font-size:1.6rem;margin-bottom:10px;}
+.rules{font-size:13px;line-height:1.5;color:#ffd;}
+</style>
 </head>
+
 <body oncontextmenu="return false;">
 
+<!-- START -->
 <div class="card" id="startScreen">
-    <div class="card-header">STRICT EXAM MODE</div>
-    <div class="card-content">
-        <h2>IPC Quiz 1</h2>
-        <input id="name" placeholder="Full Student Name">
-        <input id="reg" placeholder="Registration Number">
-        <button id="startBtn" class="btn">ENTER EXAMINATION</button>
-    </div>
+<div class="card-header">STRICT EXAM MODE</div>
+<div class="card-content">
+<h2>IPC Quiz 1</h2>
+
+<p class="rules">
+⚠️ EXAM RULES<br>
+• Attempt only ONCE<br>
+• ESC or tab switch auto-submits<br>
+• Timer auto-submits<br>
+• No going back to questions<br>
+• Do NOT refresh
+</p>
+
+<input id="name" placeholder="Full Student Name">
+<input id="reg" placeholder="Registration Number">
+<button id="startBtn" class="btn">ENTER EXAMINATION</button>
+</div>
 </div>
 
+<!-- QUIZ -->
 <div class="card" id="quizScreen" style="display:none;">
-    <div class="card-header">SECURE SESSION</div>
-    <div class="progress-container"><div id="progressBar"></div></div>
-    <div class="card-content">
-        <div class="timer"><span id="time">450</span>s</div>
-        <h3 id="question" style="min-height: 60px;"></h3>
-        <div id="options"></div>
-        <button id="nextBtn" class="btn">SUBMIT ANSWER</button>
-    </div>
+<div class="card-header">SECURE SESSION</div>
+<div class="progress-container"><div id="progressBar"></div></div>
+<div class="card-content">
+<div class="timer"><span id="time">07:30</span></div>
+<h3 id="question"></h3>
+<div id="options"></div>
+<button id="nextBtn" class="btn">SUBMIT ANSWER</button>
+</div>
 </div>
 
+<!-- RESULT -->
 <div class="card" id="resultScreen" style="display:none;">
-    <div class="card-header">EXAM COMPLETED</div>
-    <div class="card-content">
-        <h1 id="scoreDisplay" style="font-size: 3rem; margin: 10px 0;"></h1>
-        <h2 id="message"></h2>
-        <p>Correct Questions: <span id="rawMarks"></span></p>
-        <button onclick="location.reload()" class="btn" style="background:var(--secondary); color:white;">FINISH</button>
-    </div>
+<div class="card-header">EXAM COMPLETED</div>
+<div class="card-content">
+<h1 id="scoreDisplay"></h1>
+<h2 id="message"></h2>
+<p>Correct Questions: <span id="rawMarks"></span></p>
+<button onclick="location.reload()" class="btn" style="background:var(--secondary);color:white;">FINISH</button>
+</div>
 </div>
 
 <script>
 const quiz=[
-    {q:"What is the primary goal of processing instruments?", options:["Reducing equipment costs","Preventing nosocomial infections","Speeding procedures","Improving appearance","Replacing hand hygiene"],answer:1},
-    {q:"Which process removes soil using water and detergents?", options:["Sterilization","High Level Disinfection","Cleaning","Disinfestation","Incineration"],answer:2},
-    {q:"Which alcohol concentration is most effective?", options:["10%","50%","70%","95%","99%"],answer:2},
-    {q:"What is the standard temperature for autoclaving?", options:["100°C","121°C","160°C","180°C","200°C"],answer:1},
-    {q:"Which method uses friction and fluidics?", options:["Mechanical cleaning","Manual cleaning","Dry heat","Gas plasma","Chemical soaking"],answer:0},
-    {q:"Which agent preserves fresh tissue?", options:["Glutaraldehyde","Chlorine","Formaldehyde","Hydrogen Peroxide","Peracetic acid"],answer:2},
-    {q:"How long in 180°C dry heat?", options:["10 min","30 min","1 hr","2 hrs","12 hrs"],answer:3},
-    {q:"Ideal disinfectant characteristic?", options:["High toxicity","Pleasant/no odor","High cost","Corrosive","Slow action"],answer:1},
-    {q:"Terminal disinfection refers to?", options:["During illness","After recovery/death","Needle disposal","Hand washing","Blade sterilization"],answer:1},
-    {q:"Which gas is used for low-temp sterilization?", options:["Oxygen","CO₂","Ethylene Oxide","Nitrogen","Chlorine"],answer:2}
+{q:"What is the primary goal of processing instruments?",options:["Reducing equipment costs","Preventing nosocomial infections","Speeding procedures","Improving appearance","Replacing hand hygiene"],answer:1},
+{q:"Which process removes soil using water and detergents?",options:["Sterilization","High Level Disinfection","Cleaning","Disinfestation","Incineration"],answer:2},
+{q:"Which alcohol concentration is most effective?",options:["10%","50%","70%","95%","99%"],answer:2},
+{q:"What is the standard temperature for autoclaving?",options:["100°C","121°C","160°C","180°C","200°C"],answer:1},
+{q:"Which method uses friction and fluidics?",options:["Mechanical cleaning","Manual cleaning","Dry heat","Gas plasma","Chemical soaking"],answer:0},
+{q:"Which agent preserves fresh tissue?",options:["Glutaraldehyde","Chlorine","Formaldehyde","Hydrogen Peroxide","Peracetic acid"],answer:2},
+{q:"How long in 180°C dry heat?",options:["10 min","30 min","1 hr","2 hrs","12 hrs"],answer:3},
+{q:"Ideal disinfectant characteristic?",options:["High toxicity","Pleasant/no odor","High cost","Corrosive","Slow action"],answer:1},
+{q:"Terminal disinfection refers to?",options:["During illness","After recovery/death","Needle disposal","Hand washing","Blade sterilization"],answer:1},
+{q:"Which gas is used for low-temp sterilization?",options:["Oxygen","CO₂","Ethylene Oxide","Nitrogen","Chlorine"],answer:2}
 ];
 
-let i=0, score=0, timer, quizStarted = false, selectedIdx = null;
-let startTime, endTime;
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx6P4fbX2jXoQWKsB-RoEJuyILKCKW_AVeFZT3-myvXrLmO3P35G97L8UE3pJrBT8Bi/exec"; 
+let i=0,score=0,timer,quizStarted=false,selectedIdx=null;
+let startTime,endTime;
+const SCRIPT_URL="https://script.google.com/macros/s/AKfycbx6P4fbX2jXoQWKsB-RoEJuyILKCKW_AVeFZT3-myvXrLmO3P35G97L8UE3pJrBT8Bi/exec";
 
-document.getElementById("startBtn").onclick = () => {
-    const name = document.getElementById("name").value.trim();
-    const reg = document.getElementById("reg").value.trim();
-    if(!name || !reg) return alert("Fill details!");
+document.getElementById("startBtn").onclick=()=>{
+const name=nameInput.value.trim();
+const reg=regInput.value.trim();
+if(!name||!reg)return alert("Fill details!");
+if(document.documentElement.requestFullscreen)document.documentElement.requestFullscreen();
 
-    if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen();
-    
-    startTime = new Date().toLocaleTimeString();
-    quizStarted = true;
-    
-    document.getElementById("startScreen").style.display="none";
-    document.getElementById("quizScreen").style.display="block";
-    loadQuestion();
-    startTimer();
+startTime=new Date().toLocaleTimeString();
+quizStarted=true;
+
+// log start
+const entry=new URLSearchParams();
+entry.append("name",name);
+entry.append("reg",reg);
+entry.append("status","STARTED");
+fetch(SCRIPT_URL,{method:"POST",body:entry});
+
+startScreen.style.display="none";
+quizScreen.style.display="block";
+loadQuestion();
+startTimer();
 };
 
 function startTimer(){
-    let timeLeft = 450;
-    timer = setInterval(() => {
-        timeLeft--;
-        document.getElementById("time").textContent = timeLeft;
-        if(timeLeft <= 0) finish("Time Expired");
-    }, 1000);
+let timeLeft=450;
+timer=setInterval(()=>{
+timeLeft--;
+let m=Math.floor(timeLeft/60);
+let s=timeLeft%60;
+time.textContent=`${m}:${s.toString().padStart(2,"0")}`;
+if(timeLeft<=0)finish("Time Expired");
+},1000);
 }
 
 function loadQuestion(){
-    selectedIdx = null;
-    document.getElementById("nextBtn").style.display = "none";
-    const q = quiz[i];
-    document.getElementById("progressBar").style.width = (i / quiz.length * 100) + "%";
-    document.getElementById("question").textContent = (i+1) + ". " + q.q;
-    const container = document.getElementById("options");
-    container.innerHTML = "";
-    
-    q.options.forEach((o, idx) => {
-        let d = document.createElement("div");
-        d.className = "option";
-        d.innerHTML = `<div class="letter-box">${['A','B','C','D','E'][idx]}</div><span>${o}</span>`;
-        d.onclick = () => {
-            document.querySelectorAll(".option").forEach(el => el.classList.remove("selected"));
-            d.classList.add("selected");
-            selectedIdx = idx;
-            document.getElementById("nextBtn").style.display = "block";
-        };
-        container.appendChild(d);
-    });
+selectedIdx=null;
+nextBtn.style.display="none";
+const q=quiz[i];
+progressBar.style.width=(i/quiz.length*100)+"%";
+question.textContent=(i+1)+". "+q.q;
+options.innerHTML="";
+q.options.forEach((o,idx)=>{
+let d=document.createElement("div");
+d.className="option";
+d.innerHTML=`<div class="letter-box">${"ABCDE"[idx]}</div><span>${o}</span>`;
+d.onclick=()=>{
+document.querySelectorAll(".option").forEach(el=>el.classList.remove("selected"));
+d.classList.add("selected");
+selectedIdx=idx;
+nextBtn.style.display="block";
+};
+options.appendChild(d);
+});
 }
 
-document.getElementById("nextBtn").onclick = () => {
-    if(selectedIdx === quiz[i].answer) score++;
-    i++;
-    i < quiz.length ? loadQuestion() : finish("Completed Successfully");
+nextBtn.onclick=()=>{
+if(selectedIdx===quiz[i].answer)score++;
+i++;
+i<quiz.length?loadQuestion():finish("Completed Successfully");
 };
 
-function finish(reason) {
-    if(!quizStarted) return;
-    quizStarted = false;
-    clearInterval(timer);
-    if (document.fullscreenElement) document.exitFullscreen();
-    
-    endTime = new Date().toLocaleTimeString();
-    const name = document.getElementById("name").value;
-    const reg = document.getElementById("reg").value;
-    const percent = Math.round((score/quiz.length)*100) + "%";
+function finish(reason){
+if(!quizStarted)return;
+quizStarted=false;
+clearInterval(timer);
+if(document.fullscreenElement)document.exitFullscreen();
 
-    const formData = new URLSearchParams();
-    formData.append("name", name);
-    formData.append("reg", reg);
-    formData.append("startTime", startTime);
-    formData.append("endTime", endTime);
-    formData.append("marks", score); // This is the RAW number (e.g., 8)
-    formData.append("score", percent); // This is the percentage (e.g., 80%)
-    formData.append("status", reason);
+endTime=new Date().toLocaleTimeString();
+const percent=Math.round((score/quiz.length)*100)+"%";
 
-    fetch(SCRIPT_URL, {
-  method: "POST",
-  body: formData
-})
-.then(r => r.text())
-.then(console.log)
-.catch(console.error);
+const data=new URLSearchParams();
+data.append("name",nameInput.value);
+data.append("reg",regInput.value);
+data.append("startTime",startTime);
+data.append("endTime",endTime);
+data.append("marks",score);
+data.append("score",percent);
+data.append("status",reason);
+fetch(SCRIPT_URL,{method:"POST",body:data});
 
-
-    document.getElementById("quizScreen").style.display = "none";
-    document.getElementById("resultScreen").style.display = "block";
-    document.getElementById("scoreDisplay").textContent = percent;
-    document.getElementById("rawMarks").textContent = score + " / " + quiz.length;
-    document.getElementById("message").textContent = reason;
+quizScreen.style.display="none";
+resultScreen.style.display="block";
+scoreDisplay.textContent=percent;
+rawMarks.textContent=score+" / "+quiz.length;
+message.textContent=reason;
 }
 
-document.addEventListener("visibilitychange", () => {
-    if (document.visibilityState === 'hidden' && quizStarted) finish("AUTO-SUBMIT: Tab Switch");
+document.addEventListener("visibilitychange",()=>{
+if(document.visibilityState==="hidden"&&quizStarted)finish("AUTO-SUBMIT: Tab Switch");
 });
+
+document.addEventListener("keydown",e=>{
+if(e.key==="Escape"&&quizStarted)finish("AUTO-SUBMIT: ESC Pressed");
+});
+
+history.pushState(null,null,location.href);
+window.onpopstate=()=>finish("AUTO-SUBMIT: Navigation");
 </script>
 </body>
 </html>
-
