@@ -5,71 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IPC Quiz 1 | Sir Fransisco</title>
     <style>
-        :root {
-            --primary:#00d2ff; --secondary:#3a7bd5;
-            --success:#00e676; --error:#ff5252; --warning:#ff9800;
-            --dark-bg: #0f2027;
-        }
-        * { box-sizing:border-box; transition:0.3s; user-select: none; -webkit-user-drag: none; }
-        
-        body {
-            font-family:'Segoe UI',Roboto,Arial;
-            background:linear-gradient(135deg,#2c5364,#203a43,#0f2027);
-            min-height:100vh; margin:0; display:flex;
-            align-items:center; justify-content:center; color:white;
-            overflow: hidden;
-        }
-
-        .card {
-            width:95%; max-width:500px;
-            background:rgba(255,255,255,0.08);
-            backdrop-filter:blur(20px);
-            border-radius:24px; overflow:hidden;
-            box-shadow:0 25px 50px rgba(0,0,0,0.5);
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .card-header {
-            background: linear-gradient(to right, var(--secondary), var(--primary));
-            padding: 20px; text-align: center; font-weight: bold;
-            letter-spacing: 1px; text-transform: uppercase; font-size: 14px;
-        }
-
+        :root { --primary:#00d2ff; --secondary:#3a7bd5; --success:#00e676; --error:#ff5252; --warning:#ff9800; --dark-bg: #0f2027; }
+        * { box-sizing:border-box; transition:0.3s; user-select: none; }
+        body { font-family:'Segoe UI',Arial; background:linear-gradient(135deg,#2c5364,#0f2027); min-height:100vh; margin:0; display:flex; align-items:center; justify-content:center; color:white; overflow: hidden; }
+        .card { width:95%; max-width:500px; background:rgba(255,255,255,0.08); backdrop-filter:blur(20px); border-radius:24px; overflow:hidden; box-shadow:0 25px 50px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); }
+        .card-header { background: linear-gradient(to right, var(--secondary), var(--primary)); padding: 20px; text-align: center; font-weight: bold; text-transform: uppercase; font-size: 14px; }
         .card-content { padding: 30px; text-align: center; }
-
         .progress-container { width: 100%; background: rgba(255,255,255,0.1); height: 8px; }
-        #progressBar { width: 0%; height: 100%; background: var(--success); transition: 0.4s; }
-
-        input {
-            width:100%; padding:14px; border-radius:12px;
-            background:rgba(0,0,0,0.2); border:1px solid rgba(255,255,255,0.2);
-            color:white; margin-bottom:15px; outline:none;
-        }
-
-        .btn {
-            width:100%; padding:15px; border-radius:12px;
-            border:none; font-weight:bold; cursor:pointer; font-size:16px;
-            margin-top: 10px;
-        }
+        #progressBar { width: 0%; height: 100%; background: var(--success); }
+        input { width:100%; padding:14px; border-radius:12px; background:rgba(0,0,0,0.2); border:1px solid rgba(255,255,255,0.2); color:white; margin-bottom:15px; outline:none; }
+        .btn { width:100%; padding:15px; border-radius:12px; border:none; font-weight:bold; cursor:pointer; font-size:16px; margin-top: 10px; }
         #startBtn { background:var(--primary); color:var(--dark-bg); }
         #nextBtn { background:var(--success); color:white; display: none; }
-
-        .option {
-            background:rgba(255,255,255,0.05); margin:10px 0; padding:15px; border-radius:10px;
-            cursor:pointer; border:1px solid rgba(255,255,255,0.1);
-            text-align:left; display: flex; align-items: center;
-        }
-        .option:hover { background:rgba(255,255,255,0.15); }
+        .option { background:rgba(255,255,255,0.05); margin:10px 0; padding:15px; border-radius:10px; cursor:pointer; border:1px solid rgba(255,255,255,0.1); text-align:left; display: flex; align-items: center; }
         .option.selected { background:var(--secondary); border-color:var(--primary); border-width: 2px; }
-
-        .letter-box {
-            background: rgba(255,255,255,0.1); width: 30px; height: 30px; display: flex;
-            align-items: center; justify-content: center; border-radius: 6px; margin-right: 15px; font-weight: bold;
-        }
-
+        .letter-box { background: rgba(255,255,255,0.1); width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; border-radius: 6px; margin-right: 15px; font-weight: bold; }
         .timer { color:var(--warning); font-weight:bold; font-size:1.4rem; margin-bottom:10px; }
-        .fail-item { text-align: left; font-size: 0.85rem; margin-top: 5px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 5px; }
-        .correct-ans { color: var(--success); }
     </style>
 </head>
 <body oncontextmenu="return false;">
@@ -78,11 +29,6 @@
     <div class="card-header">STRICT EXAM MODE</div>
     <div class="card-content">
         <h2>IPC Quiz 1</h2>
-        <p style="opacity: 0.7; font-size: 13px;">
-            <b>Security Protocol:</b><br>
-            • Tab switching/Exiting full-screen = <b>Automatic Submit</b><br>
-            • Once you click "Submit Answer", you cannot change it.
-        </p>
         <input id="name" placeholder="Full Student Name">
         <input id="reg" placeholder="Registration Number">
         <button id="startBtn" class="btn">ENTER EXAMINATION</button>
@@ -103,10 +49,10 @@
 <div class="card" id="resultScreen" style="display:none;">
     <div class="card-header">EXAM COMPLETED</div>
     <div class="card-content">
-        <h1 id="scoreDisplay" style="font-size: 3rem; margin: 10px 0; color:var(--primary);"></h1>
+        <h1 id="scoreDisplay" style="font-size: 3rem; margin: 10px 0;"></h1>
         <h2 id="message"></h2>
-        <div id="failedReview" style="max-height: 150px; overflow-y: auto; margin: 15px 0;"></div>
-        <button onclick="location.reload()" class="btn" style="background: var(--secondary); color: white;">FINISH SESSION</button>
+        <p>Correct Questions: <span id="rawMarks"></span></p>
+        <button onclick="location.reload()" class="btn" style="background:var(--secondary); color:white;">FINISH</button>
     </div>
 </div>
 
@@ -124,44 +70,18 @@ const quiz=[
     {q:"Which gas is used for low-temp sterilization?", options:["Oxygen","CO₂","Ethylene Oxide","Nitrogen","Chlorine"],answer:2}
 ];
 
-// Tracking variables
 let i=0, score=0, timer, quizStarted = false, selectedIdx = null;
-let startTime, endTime; 
-let failedQuestions = [];
-const letters = ['A', 'B', 'C', 'D', 'E'];
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwWDMcrvhI7iv4-4IJpSr4ZutVwCKodrDrZYAJKp2I6AXKV9q4YdQ9iWi01OYyBVLLd/exec"; 
+let startTime, endTime;
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyoRq_IR_2hxQ9bOEDqJaMXxtdgP_UNG8wa1yfKO7N-bM8FarVMS5Y-YDebjT2-6Ii-/exec"; 
 
-// 1. PREVENT CHEATING ACTIONS
-document.onkeydown = (e) => {
-    if (e.key === "PrintScreen" || e.keyCode === 44 || (e.ctrlKey && (e.key === 'c' || e.key === 'u' || e.key === 's' || e.key === 'p')) || e.keyCode === 123) {
-        return false;
-    }
-};
-
-document.addEventListener("visibilitychange", () => {
-    if (document.visibilityState === 'hidden' && quizStarted) {
-        finish("AUTO-SUBMIT: Tab Switched");
-    }
-});
-
-document.addEventListener('fullscreenchange', () => {
-    if (!document.fullscreenElement && quizStarted) {
-        finish("AUTO-SUBMIT: Full-screen exited");
-    }
-});
-
-// 2. START QUIZ
 document.getElementById("startBtn").onclick = () => {
     const name = document.getElementById("name").value.trim();
     const reg = document.getElementById("reg").value.trim();
-    if(!name || !reg) return alert("Please enter your name and registration number.");
+    if(!name || !reg) return alert("Fill details!");
 
-    let doc = document.documentElement;
-    if (doc.requestFullscreen) doc.requestFullscreen();
+    if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen();
     
-    // Capture Start Time
     startTime = new Date().toLocaleTimeString();
-    
     quizStarted = true;
     
     document.getElementById("startScreen").style.display="none";
@@ -191,7 +111,7 @@ function loadQuestion(){
     q.options.forEach((o, idx) => {
         let d = document.createElement("div");
         d.className = "option";
-        d.innerHTML = `<div class="letter-box">${letters[idx]}</div><span>${o}</span>`;
+        d.innerHTML = `<div class="letter-box">${['A','B','C','D','E'][idx]}</div><span>${o}</span>`;
         d.onclick = () => {
             document.querySelectorAll(".option").forEach(el => el.classList.remove("selected"));
             d.classList.add("selected");
@@ -202,42 +122,11 @@ function loadQuestion(){
     });
 }
 
-// 3. NEXT BUTTON LOGIC
 document.getElementById("nextBtn").onclick = () => {
-    if(selectedIdx === null) return;
-    
-    const q = quiz[i];
-    if(selectedIdx === q.answer) {
-        score++;
-    } else {
-        failedQuestions.push({q: q.q, ans: q.options[q.answer]});
-    }
-
+    if(selectedIdx === quiz[i].answer) score++;
     i++;
-    if(i < quiz.length) {
-        loadQuestion();
-    } else {
-        finish("Completed Successfully");
-    }
+    i < quiz.length ? loadQuestion() : finish("Completed Successfully");
 };
-
-// Data Submission
-function sendFinalData(name, reg, sTime, eTime, rawScore, percent, reason) {
-    const formData = new URLSearchParams();
-    formData.append("name", name);
-    formData.append("reg", reg);
-    formData.append("startTime", sTime);
-    formData.append("endTime", eTime);
-    formData.append("marks", rawScore); // Corrected Count (e.g. 8)
-    formData.append("score", percent);  // Percentage (e.g. 80%)
-    formData.append("status", reason);
-
-    fetch(SCRIPT_URL, {
-        method: "POST",
-        mode: "no-cors", 
-        body: formData
-    });
-}
 
 function finish(reason) {
     if(!quizStarted) return;
@@ -245,30 +134,32 @@ function finish(reason) {
     clearInterval(timer);
     if (document.fullscreenElement) document.exitFullscreen();
     
-    // Capture End Time
     endTime = new Date().toLocaleTimeString();
-    
     const name = document.getElementById("name").value;
     const reg = document.getElementById("reg").value;
-    const rawScore = score; // Number of correct answers
     const percent = Math.round((score/quiz.length)*100) + "%";
 
-    // Send all required data to Google Sheets
-    sendFinalData(name, reg, startTime, endTime, rawScore, percent, reason);
+    const formData = new URLSearchParams();
+    formData.append("name", name);
+    formData.append("reg", reg);
+    formData.append("startTime", startTime);
+    formData.append("endTime", endTime);
+    formData.append("marks", score); // This is the RAW number (e.g., 8)
+    formData.append("score", percent); // This is the percentage (e.g., 80%)
+    formData.append("status", reason);
+
+    fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: formData });
 
     document.getElementById("quizScreen").style.display = "none";
     document.getElementById("resultScreen").style.display = "block";
-    
     document.getElementById("scoreDisplay").textContent = percent;
+    document.getElementById("rawMarks").textContent = score + " / " + quiz.length;
     document.getElementById("message").textContent = reason;
-
-    if(failedQuestions.length > 0) {
-        document.getElementById("failedReview").innerHTML = "<b>Review Mistaken Questions:</b><br>" + 
-        failedQuestions.map(f => `<div class='fail-item'>${f.q}<br><span class='correct-ans'>Correct: ${f.ans}</span></div>`).join('');
-    }
 }
+
+document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === 'hidden' && quizStarted) finish("AUTO-SUBMIT: Tab Switch");
+});
 </script>
 </body>
 </html>
-
-
