@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPC Quiz 1 | Sir Fransisco</title>
+    <style>
+        :root {
+            --primary:#00d2ff; --secondary:#3a7bd5;
+            --success:#00e676; --error:#ff5252; --warning:#ff9800;
+            --dark-bg: #0f2027;
+        }
+        * { box-sizing:border-box; transition:0.3s; user-select: none; -webkit-user-drag: none; }
+        
+        body {
+            font-family:'Segoe UI',Roboto,Arial;
+            background:linear-gradient(135deg,#2c5364,#203a43,#0f2027);
+            min-height:100vh; margin:0; display:flex;
+            align-items:center; justify-content:center; color:white;
+            overflow: hidden;
+        }
+
+        .card {
+            width:95%; max-width:500px;
+            background:rgba(255,255,255,0.08);
+            backdrop-filter:blur(20px);
+            border-radius:24px; overflow:hidden;
+            box-shadow:0 25px 50px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .card-header {
+            background: linear-gradient(to right, var(--secondary), var(--primary));
+            padding: 20px; text-align: center; font-weight: bold;
+            letter-spacing: 1px; text-transform: uppercase; font-size: 14px;
+        }
+
+        .card-content { padding: 30px; text-align: center; }
+
+        .progress-container { width: 100%; background: rgba(255,255,255,0.1); height: 8px; }
+        #progressBar { width: 0%; height: 100%; background: var(--success); transition: 0.4s; }
+
+        input {
+            width:100%; padding:14px; border-radius:12px;
+            background:rgba(0,0,0,0.2); border:1px solid rgba(255,255,255,0.2);
+            color:white; margin-bottom:15px; outline:none;
+        }
+
+        .btn {
+            width:100%; padding:15px; border-radius:12px;
+            border:none; font-weight:bold; cursor:pointer; font-size:16px;
+            margin-top: 10px;
+        }
+        #startBtn { background:var(--primary); color:var(--dark-bg); }
+        #nextBtn { background:var(--success); color:white; display: none; }
+
+        .option {
+            background:rgba(255,255,255,0.05); margin:10px 0; padding:15px; border-radius:10px;
+            cursor:pointer; border:1px solid rgba(255,255,255,0.1);
+            text-align:left; display: flex; align-items: center;
+        }
+        .option:hover { background:rgba(255,255,255,0.15); }
+        .option.selected { background:var(--secondary); border-color:var(--primary); border-width: 2px; }
+
+        .letter-box {
+            background: rgba(255,255,255,0.1); width: 30px; height: 30px; display: flex;
+            align-items: center; justify-content: center; border-radius: 6px; margin-right: 15px; font-weight: bold;
+        }
+
+        .timer { color:var(--warning); font-weight:bold; font-size:1.4rem; margin-bottom:10px; }
+        .fail-item { text-align: left; font-size: 0.85rem; margin-top: 5px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 5px; }
+        .correct-ans { color: var(--success); }
+    </style>
+</head>
+<body oncontextmenu="return false;">
+
+<div class="card" id="startScreen">
+    <div class="card-header">STRICT EXAM MODE</div>
+    <div class="card-content">
+        <h2>IPC Quiz 1</h2>
+        <p style="opacity: 0.7; font-size: 13px;">
+            <b>Security Protocol:</b><br>
+            • Tab switching/Exiting full-screen = <b>Automatic Submit</b><br>
+            • Once you click "Submit Answer", you cannot change it.
+        </p>
+        <input id="name" placeholder="Full Student Name">
+        <input id="reg" placeholder="Registration Number">
+        <button id="startBtn" class="btn">ENTER EXAMINATION</button>
+    </div>
+</div>
+
+<div class="card" id="quizScreen" style="display:none;">
+    <div class="card-header">SECURE SESSION</div>
+    <div class="progress-container"><div id="progressBar"></div></div>
+    <div class="card-content">
+        <div class="timer"><span id="time">450</span>s</div>
+        <h3 id="question" style="min-height: 60px;"></h3>
+        <div id="options"></div>
+        <button id="nextBtn" class="btn">SUBMIT ANSWER</button>
+    </div>
+</div>
+
+<div class="card" id="resultScreen" style="display:none;">
+    <div class="card-header">EXAM COMPLETED</div>
+    <div class="card-content">
+        <h1 id="scoreDisplay" style="font-size: 3rem; margin: 10px 0; color:var(--primary);"></h1>
+        <h2 id="message"></h2>
+        <div id="failedReview" style="max-height: 150px; overflow-y: auto; margin: 15px 0;"></div>
+        <button onclick="location.reload()" class="btn" style="background: var(--secondary); color: white;">FINISH SESSION</button>
+    </div>
+</div>
+
+<script>
+const quiz=[
+    {q:"What is the primary goal of processing instruments?", options:["Reducing equipment costs","Preventing nosocomial infections","Speeding procedures","Improving appearance","Replacing hand hygiene"],answer:1},
+    {q:"Which process removes soil using water and detergents?", options:["Sterilization","High Level Disinfection","Cleaning","Disinfestation","Incineration"],answer:2},
+    {q:"Which alcohol concentration is most effective?", options:["10%","50%","70%","95%","99%"],answer:2},
+    {q:"What is the standard temperature for autoclaving?", options:["100°C","121°C","160°C","180°C","200°C"],answer:1},
+    {q:"Which method uses friction and fluidics?", options:["Mechanical cleaning","Manual cleaning","Dry heat","Gas plasma","Chemical soaking"],answer:0},
+    {q:"Which agent preserves fresh tissue?", options:["Glutaraldehyde","Chlorine","Formaldehyde","Hydrogen Peroxide","Peracetic acid"],answer:2},
+    {q:"How long in 180°C dry heat?", options:["10 min","30 min","1 hr","2 hrs","12 hrs"],answer:3},
+    {q:"Ideal disinfectant characteristic?", options:["High toxicity","Pleasant/no odor","High cost","Corrosive","Slow action"],answer:1},
+    {q:"Terminal disinfection refers to?", options:["During illness","After recovery/death","Needle disposal","Hand washing","Blade sterilization"],answer:1},
+    {q:"Which gas is used for low-temp sterilization?", options:["Oxygen","CO₂","Ethylene Oxide","Nitrogen","Chlorine"],answer:2}
+];
+
+let i=0, score=0, timer, quizStarted = false, selectedIdx = null;
+let failedQuestions = [];
+const letters = ['A', 'B', 'C', 'D', 'E'];
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyR7A_u8zRWCG4GzhntPb123kqThgIjvBbbTEWtZKNRLN28wA2RZhUDDA2-ULUVo0DI/exec"; 
+
+// 1. PREVENT CHEATING ACTIONS
+document.onkeydown = (e) => {
+    if (e.key === "PrintScreen" || e.keyCode === 44 || (e.ctrlKey && (e.key === 'c' || e.key === 'u' || e.key === 's' || e.key === 'p')) || e.keyCode === 123) {
+        return false;
+    }
+};
+
+document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === 'hidden' && quizStarted) {
+        finish("AUTO-SUBMIT: Tab Switched");
+    }
+});
+
+document.addEventListener('fullscreenchange', () => {
+    if (!document.fullscreenElement && quizStarted) {
+        finish("AUTO-SUBMIT: Full-screen exited");
+    }
+});
+
+// 2. START QUIZ
+document.getElementById("startBtn").onclick = () => {
+    const name = document.getElementById("name").value.trim();
+    const reg = document.getElementById("reg").value.trim();
+    if(!name || !reg) return alert("Please enter your name and registration number.");
+
+    let doc = document.documentElement;
+    if (doc.requestFullscreen) doc.requestFullscreen();
+    
+    quizStarted = true;
+    sendData(name, reg, "STARTED");
+    
+    document.getElementById("startScreen").style.display="none";
+    document.getElementById("quizScreen").style.display="block";
+    loadQuestion();
+    startTimer();
+};
+
+function startTimer(){
+    let timeLeft = 450;
+    timer = setInterval(() => {
+        timeLeft--;
+        document.getElementById("time").textContent = timeLeft;
+        if(timeLeft <= 0) finish("Time Expired");
+    }, 1000);
+}
+
+function loadQuestion(){
+    selectedIdx = null;
+    document.getElementById("nextBtn").style.display = "none";
+    const q = quiz[i];
+    document.getElementById("progressBar").style.width = (i / quiz.length * 100) + "%";
+    document.getElementById("question").textContent = (i+1) + ". " + q.q;
+    const container = document.getElementById("options");
+    container.innerHTML = "";
+    
+    q.options.forEach((o, idx) => {
+        let d = document.createElement("div");
+        d.className = "option";
+        d.innerHTML = `<div class="letter-box">${letters[idx]}</div><span>${o}</span>`;
+        d.onclick = () => {
+            document.querySelectorAll(".option").forEach(el => el.classList.remove("selected"));
+            d.classList.add("selected");
+            selectedIdx = idx;
+            document.getElementById("nextBtn").style.display = "block"; // Show button only after selection
+        };
+        container.appendChild(d);
+    });
+}
+
+// 3. NEXT BUTTON LOGIC
+document.getElementById("nextBtn").onclick = () => {
+    if(selectedIdx === null) return;
+    
+    const q = quiz[i];
+    if(selectedIdx === q.answer) {
+        score++;
+    } else {
+        failedQuestions.push({q: q.q, ans: q.options[q.answer]});
+    }
+
+    i++;
+    if(i < quiz.length) {
+        loadQuestion();
+    } else {
+        finish("Completed Successfully");
+    }
+};
+
+function sendData(name, reg, status) {
+    const formData = new URLSearchParams();
+    formData.append("name", name);
+    formData.append("reg", reg);
+    formData.append("score", status);
+
+    fetch(SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors", 
+        body: formData
+    });
+}
+
+function finish(reason) {
+    if(!quizStarted) return;
+    quizStarted = false;
+    clearInterval(timer);
+    if (document.fullscreenElement) document.exitFullscreen();
+    
+    const name = document.getElementById("name").value;
+    const reg = document.getElementById("reg").value;
+    const finalScore = `${score}/${quiz.length} [${reason}]`;
+
+    sendData(name, reg, finalScore);
+
+    document.getElementById("quizScreen").style.display = "none";
+    document.getElementById("resultScreen").style.display = "block";
+    
+    let p = Math.round((score/quiz.length)*100);
+    document.getElementById("scoreDisplay").textContent = p + "%";
+    document.getElementById("message").textContent = reason;
+
+    if(failedQuestions.length > 0) {
+        document.getElementById("failedReview").innerHTML = "<b>Review Mistaken Questions:</b><br>" + 
+        failedQuestions.map(f => `<div class='fail-item'>${f.q}<br><span class='correct-ans'>Correct: ${f.ans}</span></div>`).join('');
+    }
+}
+</script>
+</body>
+</html>
