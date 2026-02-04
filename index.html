@@ -72,7 +72,7 @@ const quiz=[
 
 let i=0, score=0, timer, quizStarted = false, selectedIdx = null;
 let startTime, endTime;
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyoRq_IR_2hxQ9bOEDqJaMXxtdgP_UNG8wa1yfKO7N-bM8FarVMS5Y-YDebjT2-6Ii-/exec"; 
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx6P4fbX2jXoQWKsB-RoEJuyILKCKW_AVeFZT3-myvXrLmO3P35G97L8UE3pJrBT8Bi/exec"; 
 
 document.getElementById("startBtn").onclick = () => {
     const name = document.getElementById("name").value.trim();
@@ -148,7 +148,14 @@ function finish(reason) {
     formData.append("score", percent); // This is the percentage (e.g., 80%)
     formData.append("status", reason);
 
-    fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: formData });
+    fetch(SCRIPT_URL, {
+  method: "POST",
+  body: formData
+})
+.then(r => r.text())
+.then(console.log)
+.catch(console.error);
+
 
     document.getElementById("quizScreen").style.display = "none";
     document.getElementById("resultScreen").style.display = "block";
@@ -163,3 +170,4 @@ document.addEventListener("visibilitychange", () => {
 </script>
 </body>
 </html>
+
